@@ -1,9 +1,10 @@
 import { createEnum } from 'ember-flexberry-data/utils/enum-functions';
 
 export default createEnum({
-  All: 'Наилучший вариант',
   Jonson: 'Алгоритм Джонсона',
-  Front: 'Фронтальный алгоритм',
-  NEH: 'Эвристика NEH',
-  Lex: 'Лексикографический алгоритм'
+  Genetic: 'Генетический Алгоритм',
+  MinLabor: 'Наименьшая трудоемкость',
+  MaxLabor: 'Наибольшая трудоемкость',
+  Random: 'Случайный выбор',
+  OperationNumber: 'Наибольшее число операций',
 });

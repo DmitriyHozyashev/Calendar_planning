@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 // Структурирование данных для вычисления.
-function _getObjArr(arr, sumWorkArr=0, operationsLeksOrder=0){
+function _getObjArr(arr, sumWorkArr=0, operationsOrder=0){
   let arrWorksList = new Array();
 
   arr.forEach(function(item, i, arr) {
@@ -14,8 +14,8 @@ function _getObjArr(arr, sumWorkArr=0, operationsLeksOrder=0){
       };
     });
     let curNumWork = i;
-    if (operationsLeksOrder.length > 0) {
-      curNumWork = operationsLeksOrder[i]
+    if (operationsOrder.length > 0) {
+      curNumWork = operationsOrder[i]
     }
     arrWorksList[i] = {
       numWork: curNumWork,
@@ -25,10 +25,6 @@ function _getObjArr(arr, sumWorkArr=0, operationsLeksOrder=0){
   });
 
   return arrWorksList;
-}
-
-function _getMaxOfArray(numArray) {
-  return Math.max.apply(null, numArray);
 }
 
 // Вычисление начала и окончания обработок в готовом плане
@@ -69,8 +65,8 @@ function _getSumOp(arr) {
   return arrSumOp;
 }
 
-// Фронтальный алгоритм.
-function frontAlg(arr) {
+// Наибольшее число операций
+function operationsNumber(arr) {
   let arrWorks = _getSumOp(arr);
   let objArr = _getObjArr(arr, arrWorks);
 
@@ -83,55 +79,8 @@ function frontAlg(arr) {
   return _getStartEndTime(objArr);
 }
 
-// Эвристика NEH.
-function nehAlg(arr,m) {
-  let arrWorks = _getSumOp(arr);
-  let objArr = _getObjArr(arr, arrWorks);
-  
-  objArr.sort((a, b) => {
-    if (a.valueWork < b.value_work) return -1;
-    if (a.value_work > b.value_work) return 1;
-    return 0;
-  });
-  
-  _getStartEndTime(objArr);
-  let arrSwap = new Array();
-  let arrHelp = new Array();
-
-  // начальную сумму нужно считать каждую новую итерацию
-  let sum = 0;
-  
-  arrSwap.push(objArr[0]);
-  
-  for (let i = 1; i < objArr.length; i++){
-    arrHelp = arrSwap;
-    arrHelp = JSON.parse(JSON.stringify(arrSwap));
-    for (let j=0; j<=i; j++){
-      if (j != 0)
-        arrHelp.splice(j-1, 1);
-      arrHelp.splice(j, 0, objArr[i]);
-      if (j == 0) {
-        arrSwap = JSON.parse(JSON.stringify(arrHelp));
-        _getStartEndTime(arrHelp);
-        sum = getSumTime(arrHelp);
-      }
-      else {
-        _getStartEndTime(arrHelp);
-        let thisSum = getSumTime(arrHelp);
-        if (thisSum < sum) {
-          sum = thisSum;
-          arrSwap = JSON.parse(JSON.stringify(arrHelp));
-        }
-      }
-    }
-  };
-
-  return arrSwap;
-}
-
-// Получение символьной строки с номерами операцй, отсортированных по невозрастанию.
-// Лексикографический алгоритм.
-function _operationsLeks(arr) {
+// Наименьшая трудоемкость
+function minLabor(arr) {
   let operationsNum = new Array();
   for (let i=0; i<arr.length; i++) {
 
@@ -147,43 +96,58 @@ function _operationsLeks(arr) {
         index: j
       }
     });
-
     operationsNum[i].opsArr.sort((a, b) => {
       if (a.operation <= b.operation) return 1;
       if (a.operation > b.operation) return -1;
-    });
-
-    let leksStr = "";
-    operationsNum[i].opsArr.forEach((item, j, arr) =>{
-      leksStr += ".";
-      leksStr += (item.index + 1);
-    });
-    operationsNum[i].leksString = leksStr.slice(1);
-  }
-  operationsNum.sort((a,b)=>{
-    if (a.leksString < b.leksString) return 1;
-    if (a.leksString > b.leksString) return -1;
-    return 0;
-  });
-  operationsNum.sort((a,b) => {
-    if (a.leksString == b.leksString)
-    {
-      if (a.opsArr[0].operation < b.opsArr[0].operation) return 1;
-      if (a.opsArr[0].operation > b.opsArr[0].operation) return -1;
       return 0;
-    }
-  });
+    });
+  }
 
   let resultArr = new Array();
   operationsNum.forEach((item, i, arr) =>{
     resultArr.push(item.workNum);
   });
 
-  return resultArr;
+  let objArr = _getObjArr(arr);
+
+  return _getStartEndTime(objArr);;
 }
 
-// Перемещение работ согласно заданному порядку.
-// Лексикографический алгоритм.
+// Наибольшая трудоемкость
+function maxLabor(arr) {
+  let operationsNum = new Array();
+  for (let i=0; i<arr.length; i++) {
+
+    operationsNum[i] = {
+      workNum: i,
+      leksString: '',
+      opsArr: new Array()
+    }
+
+    arr[i].forEach((item, j, arr) => {
+      operationsNum[i].opsArr[j] = {
+        operation: item,
+        index: j
+      }
+    });
+    operationsNum[i].opsArr.sort((a, b) => {
+      if (a.operation <= b.operation) return -1;
+      if (a.operation > b.operation) return 1;
+      return 0;
+    });
+  }
+
+  let resultArr = new Array();
+  operationsNum.forEach((item, i, arr) =>{
+    resultArr.push(item.workNum);
+  });
+
+  let objArr = _getObjArr(arr);
+
+  return _getStartEndTime(objArr);;
+}
+
+// Перемещение работ согласно заданному порядку
 function _replaceWorks(defaultArr, order) {
   let resultArr = new Array();
   order.forEach((item, i, arr) =>{
@@ -193,12 +157,16 @@ function _replaceWorks(defaultArr, order) {
   return resultArr;
 };
 
-// Лексикографический алгоритм.
-function leksAlg(arr) {
-  let operationsLeksOrder = _operationsLeks(arr);
-  let resultArr = _replaceWorks(arr, operationsLeksOrder);
-  let objArr = _getObjArr(resultArr, 0, operationsLeksOrder);
-
+// Случайный выбор
+function randomDetail(mapList){
+  for (let i = 0; i<mapList.length; i++)
+      for (let j = 0; j<mapList[i].length; j++)
+          if (mapList[i][j] == null)
+              mapList[i].splice(j,1);
+  for (let i = 0; i<mapList.length; i++)
+  let randomArr = mapList[i].sort(() => Math.random() - 0.5);
+  let resultArr = _replaceWorks(mapList, randomDetail);
+  let objArr = _getObjArr(resultArr)
   return _getStartEndTime(objArr);
 }
 
@@ -221,10 +189,100 @@ function jonsonAlg(defaultArr) {
   }
 }
 
+// Генетический алгоритм
+function geneticAlgorithm(mapList){
+  let mParent = new Array();
+  for (let i =0; i < mapList.length; i++) {
+      for (let j =0; i < mapList[i].length; j++)
+          mParent.push(mapList[i][j]);
+  }
+  let parentPop = new Array();
+
+  for (let i = 0; i <50; i++){
+      parentPop[i] = new Array();
+      for (let i = 0; i < mParent.length; i++)
+          parentPop[i].push(op);
+      parentPop.sort(() => Math.random() * 50);
+  }
+  for (let i=0; parentPop.length; i++)
+    parentPop[i] = _getObjArr(parentPop[i]);
+  while (parentPop.size() != 1){
+    parentPop = selectionF(parentPop);
+  }
+  let objArr = _getObjArr(parentPop[1]);
+  
+  return _getStartEndTime(objArr);
+}
+
+// Функция отбора
+function selectionF(parentPop){
+  let selectedPop = new Array ();
+  let fitValue = fitnessF(parentPop[Math.floor(Math.random() * parentPop.length)]);
+  for (let i =0; i<parentPop.length; i++){
+      selectedPop[i]= new Array();
+      let sumDuration = 0;
+      for (let j =0; j<parentPop.length; j++)
+          spiciesDuration = fitnessF(parentPop[j]);
+      if (sumDuration <= fitValue)
+          selectedPop.push(parentPop[i]);
+  }
+  return crossF(selectedPop);
+}
+
+// Функция фитнеса
+function fitnessF(genomeListOfspring){
+  let fitValue = 0;
+  let objArr = _getObjArr(genomeListOfspring);
+  let timeArr = _getStartEndTime(objArr)
+  let planDuration = getSumTime(timeArr);
+  return planDuration;
+}
+
+// Функция скрещивания
+function crossF(selectedPop){
+  let offspringPop = new Array();
+  for (let i =0;  i < selectedPop.length; i++)
+      selectedPop.sort(() => Math.random() - 0.5); 
+  let rndind =0;
+  for (let i=0; i< selectedPop.length; i++) {
+      rndind = Math.floor(Math.random()*selectedPop.length);
+      let subList = selectedPop[rndind].slice(Math.floor(Math.random()* (selectedPop[rndind].length), Math.floor(Math.random()* (selectedPop[rndind].length))));
+      let op = subList[0];
+      rndind = Math.floor(Math.random()* (selectedPop.size()));
+      let list = selectedPop[rndind]; 
+      let index = list.indexOf(op);
+      for (let i=0; i<subList.length; i++){
+        let ind = list.indexOf(subList[i]);
+        list = list.splice(ind, 1, 0);
+      }
+      list.splice(index, 0, subList);
+      for (let i=0; i<subList.length; i++){
+        let ind = list.indexOf(0);
+        list = list.splice(ind,1);
+      }
+      offspringPop.push(list);
+  }
+  return mutationF(offspringPop);
+}
+
+// Функция генерации мутации
+function mutationF(offspringPop){ 
+  let rndind = 0;
+  for (let i = 0; i<offspringPop.length;i++){
+      let list = offspringPop[i];
+      rndind1 = Math.floor(Math.random()*list.length);
+      rndind2 = Math.floor(Math.random()*list.length);
+      [offspringPop[i][ind1], offspringPop[i][ind2]] = [offspringPop[i][ind2], offspringPop[i][ind1]];
+  }
+  return offspringPop;
+}
+
 export {
-  frontAlg,
-  leksAlg,
-  nehAlg,
+  gneticAlgorithm,
+  minLabor,
+  maxLabor,
+  randomDetail,
+  operationsNumber,
   jonsonAlg,
   getSumTime
 };

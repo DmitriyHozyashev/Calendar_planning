@@ -27,38 +27,38 @@ namespace Cpmc
     // *** End programmer edit section *** (tPlanAlgorithm CustomAttributes)
     public enum tPlanAlgorithm
     {
-        All,
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        // *** Start programmer edit section *** (tPlanAlgorithm.Jonson CustomAttributes)
-
-        // *** End programmer edit section *** (tPlanAlgorithm.Jonson CustomAttributes)
         Jonson,
         
         /// <summary>
         /// 
         /// </summary>
-        // *** Start programmer edit section *** (tPlanAlgorithm.Front CustomAttributes)
+        // *** Start programmer edit section *** (tPlanAlgorithm.Genetic CustomAttributes)
 
-        // *** End programmer edit section *** (tPlanAlgorithm.Front CustomAttributes)
-        Front,
+        // *** End programmer edit section *** (tPlanAlgorithm.Genetic CustomAttributes)
+        Genetic,
         
         /// <summary>
         /// 
         /// </summary>
-        // *** Start programmer edit section *** (tPlanAlgorithm.NEH CustomAttributes)
+        // *** Start programmer edit section *** (tPlanAlgorithm.MinMaxLabor CustomAttributes)
 
-        // *** End programmer edit section *** (tPlanAlgorithm.NEH CustomAttributes)
-        NEH,
-        
-        /// <summary>
+        // *** End programmer edit section *** (tPlanAlgorithm.MinMaxLabor CustomAttributes)
+        MinMaxLabor,
+		
+		/// <summary>
         /// 
         /// </summary>
-        // *** Start programmer edit section *** (tPlanAlgorithm.Lex CustomAttributes)
+        // *** Start programmer edit section *** (tPlanAlgorithm.Random CustomAttributes)
 
-        // *** End programmer edit section *** (tPlanAlgorithm.Lex CustomAttributes)
-        Lex,
+        // *** End programmer edit section *** (tPlanAlgorithm.Random CustomAttributes)
+        Random,
+		
+		/// <summary>
+        /// 
+        /// </summary>
+        // *** Start programmer edit section *** (tPlanAlgorithm.OperationNumber CustomAttributes)
+
+        // *** End programmer edit section *** (tPlanAlgorithm.OperationNumber CustomAttributes)
+        OperationNumber,
     }
 }
