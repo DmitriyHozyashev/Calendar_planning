@@ -278,7 +278,7 @@ function mutationF(offspringPop){
 }
 
 export {
-  gneticAlgorithm,
+  geneticAlgorithm,
   minLabor,
   maxLabor,
   randomDetail,
