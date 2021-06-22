@@ -165,7 +165,7 @@ function randomDetail(mapList){
               mapList[i].splice(j,1);
   for (let i = 0; i<mapList.length; i++)
   let randomArr = mapList[i].sort(() => Math.random() - 0.5);
-  let resultArr = _replaceWorks(mapList, randomDetail);
+  let resultArr = _replaceWorks(mapList, randomArr);
   let objArr = _getObjArr(resultArr)
   return _getStartEndTime(objArr);
 }
