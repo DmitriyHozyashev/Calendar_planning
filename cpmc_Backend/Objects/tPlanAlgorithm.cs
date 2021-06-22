@@ -40,10 +40,18 @@ namespace Cpmc
         /// <summary>
         /// 
         /// </summary>
-        // *** Start programmer edit section *** (tPlanAlgorithm.MinMaxLabor CustomAttributes)
+        // *** Start programmer edit section *** (tPlanAlgorithm.MinLabor CustomAttributes)
 
-        // *** End programmer edit section *** (tPlanAlgorithm.MinMaxLabor CustomAttributes)
-        MinMaxLabor,
+        // *** End programmer edit section *** (tPlanAlgorithm.MinLabor CustomAttributes)
+        MinLabor,
+		
+		/// <summary>
+        /// 
+        /// </summary>
+        // *** Start programmer edit section *** (tPlanAlgorithm.MaxLabor CustomAttributes)
+
+        // *** End programmer edit section *** (tPlanAlgorithm.MaxLabor CustomAttributes)
+        MaxLabor,
 		
 		/// <summary>
         /// 
